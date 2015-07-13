@@ -28,8 +28,9 @@ public class TweetManager {
 		return instance;
 	}
 	
-	String filename = "./twitter4j.properties";
-	Twitter twitter;
+	private final String filename = "./twitter4j.properties";
+	private Twitter twitter;
+	private RequestToken requestToken;
 	private TweetManager(){
 		twitter = TwitterFactory.getSingleton();
 	}
@@ -38,16 +39,16 @@ public class TweetManager {
 	public static void main(String[] args) throws Exception{
 		TweetManager tm = TweetManager.getInstance();
 
-		/*RequestToken rToken = TwitterFactory.getSingleton().getOAuthRequestToken();
-		System.out.println(rToken.getAuthorizationURL());
+		/*String url = tm.createRequestToken();
+		System.out.println(url);
 		Scanner s = new Scanner(System.in);
 		String pin = s.nextLine();
-		if(tm.authorize(rToken, pin)){
+		if(tm.authorize(pin)){
 			System.out.println("YEY!");
 		}*/
 		tm.tweet(args[0]);
 	}
-
+	//twitter.propertiesに保存されているアクセストークンに紐づけられているアカウントでツイート
 	public Status tweet(String text){
 		try{
 			return twitter.updateStatus(text);
@@ -56,22 +57,20 @@ public class TweetManager {
 		}
 	}
 	
-	private AccessToken getAccessToken(){
-		String token;
-		String tokenSecret;
+	//リクエストトークンを生成し、認証URLを返す
+	//twitter.propertiesにアクセストークンが書かれてるとこれが例外を起こす
+	//消すかなんかしないと
+	public String createRequestToken(){
 		try{
-			Scanner s = new Scanner(new File(filename));
-			token = s.nextLine();
-			tokenSecret = s.nextLine();
-			s.close();
+			requestToken = twitter.getOAuthRequestToken();
+			return requestToken.getAuthorizationURL();
 		}catch(Exception e){
 			return null;
 		}
-		return new AccessToken(token, tokenSecret);
 	}
 	
 	//アクセストークン取得・保存
-	public boolean authorize(RequestToken requestToken, String pin){
+	public boolean authorize(String pin){
 		//twitter.setOAuthConsumer(...);
     	//リクエストトークン取得して、渡されたPINコードでアクセストークン取りに行く
     	try{
