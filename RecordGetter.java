@@ -15,14 +15,14 @@ import java.io.BufferedWriter;
 import java.io.PrintWriter;
 
 public class RecordGetter {
-    Connection connection;
-    Statement statement;
+	Connection connection;
+	Statement statement;
 	
 	private RecordGetter(String dbName) throws Exception{
 		Class.forName("org.sqlite.JDBC");
-	    connection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
-        statement = connection.createStatement();
-        statement.setQueryTimeout(30);
+		connection = DriverManager.getConnection("jdbc:sqlite:" + dbName);
+		statement = connection.createStatement();
+		statement.setQueryTimeout(30);
 	}
 	
 	public static RecordGetter createInstance(String dbName){
@@ -36,55 +36,37 @@ public class RecordGetter {
 	private ResultSet executeQuery(String sql) throws Exception{
 		return statement.executeQuery(sql);
 	}
-	private String read(Reader r)throws Exception{
-		char[] buff = new char[255];
-		while(r.read(buff,0,255) != -1){}
-		return new String(buff);
-	}
+
 	public void printAll() throws Exception{
 		System.out.println("Result:");
 		String sql = "select * from trackrecord145";
 		//ÉNÉGÉäé¿çs
-        ResultSet rs = statement.executeQuery(sql);
-            
-        ResultSetMetaData rsmd = rs.getMetaData();
-        while (rs.next()) {
-            for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-                System.out.print(rs.getString(i));
-                System.out.print(i < rsmd.getColumnCount() ? "," : "");
-            }
-            System.out.print(System.getProperty("line.separator"));
-        }    		
+		ResultSet rs = statement.executeQuery(sql);
+			
+		ResultSetMetaData rsmd = rs.getMetaData();
+		while (rs.next()) {
+			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
+				System.out.print(rs.getString(i));
+				System.out.print(i < rsmd.getColumnCount() ? "," : "");
+			}
+			System.out.print(System.getProperty("line.separator"));
+		}			
 	}
 	
 	public void finalize(){
-        try {
-            if (statement != null) {
-                statement.close();
-            }
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-        try {
-            if (connection != null) {
-                connection.close();
-        	}
-        } catch (SQLException e) {
-            System.err.println(e);
-        }
-    }		
-    public static void main(String[] args) throws ClassNotFoundException {
-		RecordGetter rg = null;
-        try {
-			rg = RecordGetter.createInstance("Default.db");
-        	if(rg == null)
-        		return;
-        
-        	rg.printAll();
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        } finally {
-			rg.finalize();
-        }
-    }
+		try {
+			if (statement != null) {
+				statement.close();
+			}
+		} catch (SQLException e) {
+			System.err.println(e);
+		}
+		try {
+			if (connection != null) {
+				connection.close();
+			}
+		} catch (SQLException e) {
+			System.err.println(e);
+		}
+	}
 }
