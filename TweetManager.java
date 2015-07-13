@@ -28,7 +28,7 @@ public class TweetManager {
 		return instance;
 	}
 	
-	String filename = "./token.txt";
+	String filename = "./twitter4j.properties";
 	Twitter twitter;
 	private TweetManager(){
 		twitter = TwitterFactory.getSingleton();
@@ -38,20 +38,18 @@ public class TweetManager {
 	public static void main(String[] args) throws Exception{
 		TweetManager tm = TweetManager.getInstance();
 
-		RequestToken rToken = TwitterFactory.getSingleton().getOAuthRequestToken();
+		/*RequestToken rToken = TwitterFactory.getSingleton().getOAuthRequestToken();
 		System.out.println(rToken.getAuthorizationURL());
 		Scanner s = new Scanner(System.in);
 		String pin = s.nextLine();
 		if(tm.authorize(rToken, pin)){
 			System.out.println("YEY!");
-		}
+		}*/
 		tm.tweet(args[0]);
 	}
 
 	public Status tweet(String text){
 		try{
-			AccessToken at = getAccessToken();
-			twitter.setOAuthAccessToken(at);
 			return twitter.updateStatus(text);
 		}catch(Exception e){
 			return null;
@@ -82,24 +80,32 @@ public class TweetManager {
     		//将来の参照用に accessToken を永続化する
     		return storeAccessToken(twitter.verifyCredentials().getId() , accessToken);
       	} catch (TwitterException te) {
-        	/*if(401 == te.getStatusCode()){
-          		System.out.println("Unable to get the access token.");
-        	}else{
-          		te.printStackTrace();
-       		}*/
        		return false;
     	}
   	}
   	private boolean storeAccessToken(long useId, AccessToken accessToken){
 		try{
-			//ほんとはtwitter.propertyを書き換えに行く方が良い？
+			StringBuilder sb = new StringBuilder();
 			File file = new File(filename);
+    		//ファイルを全部読み込んで移す
+			Scanner s = new Scanner(file);
+			String oauthAt = "oauth.accessToken";
+			String oauthAts = "oauth.accessTokenSecret";
+			while(s.hasNextLine()){
+				String str = s.nextLine();
+				//oauth.accessToken=...となっている行は消す
+				if(!str.contains(oauthAts) && !str.contains(oauthAt)){
+					sb.append(str).append('\n');
+				}
+			}
+			s.close();
+			//新しいアクセストークンを追記
+			sb.append(oauthAt + "=" + accessToken.getToken()).append('\n');
+			sb.append(oauthAts + "=" + accessToken.getTokenSecret());
+    		//書きだす
     		PrintWriter pw = new PrintWriter(new BufferedWriter(new FileWriter(file)));
-    		//pw.println(useId);
-    		pw.println(accessToken.getToken());
-    		pw.println(accessToken.getTokenSecret());
-    		
-    		pw.close();
+			pw.println(sb.toString());
+			pw.close();
     	}catch(Exception e){
 			return false;
 		}
