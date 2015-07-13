@@ -33,6 +33,17 @@ public class RecordGetter {
 		}
 	}
 	
+	public float getWinningPercentage(){
+		try{
+			int all = executeQuery("select count(timestamp) from trackrecord145").getInt(1);
+			int wins = executeQuery("select count(timestamp) from trackrecord145 where p1win > p2win").getInt(1);
+			return (float)wins / all;
+		}catch(Exception e){
+			System.out.println(e);
+			return -1;
+		}
+	}
+
 	private ResultSet executeQuery(String sql) throws Exception{
 		return statement.executeQuery(sql);
 	}
