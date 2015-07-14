@@ -18,4 +18,20 @@ public class RecordInfo {
 			return (float)wins / recordCount;
 		return -1;
 	}
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		sb.append(getWins() + "èü");
+		sb.append(getLoses() + "îs");
+		float winning = (int)(getWinningPercentage() * 1000) / 10.0f;
+		sb.append("(" + winning + "%)");
+		return sb.toString();
+	}
+	
+	public String toString(RecordFilter filter){
+		StringBuilder sb = new StringBuilder();
+		sb.append(filter.toString());
+		sb.append(":");
+		sb.append(toString());
+		return sb.toString();
+	}
 }

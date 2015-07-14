@@ -38,7 +38,6 @@ public class RecordFilter{
 	}
 	public String toString(){
 		StringBuilder sb = new StringBuilder();
-		
 		if(character_p1 != Character.UNSPECIFIED){
 			if(character_p2 != Character.UNSPECIFIED){
 				sb.append(character_p1.toString());
@@ -49,18 +48,22 @@ public class RecordFilter{
 				sb.append(character_p1.toString());
 				sb.append("g—p");
 			}
+			if(count > 0)
+				sb.append("(’¼‹ß" + count + "í)");
 		}else{
 			if(character_p2 != Character.UNSPECIFIED){
 				sb.append("vs");
 				sb.append(character_p2.toString());
 				sb.append("í");
+				if(count > 0)
+					sb.append("(’¼‹ß" + count + "í)");
 			}else{
-				sb.append("‘‡");
+				if(count > 0)
+					sb.append("’¼‹ß" + count + "í");
+				else
+					sb.append("‘‡");
 			}
-		}
-		if(count > 0)
-			sb.append("(’¼‹ß" + count + "í)");
-		
+		}		
 		return sb.toString();
 	}
 }
