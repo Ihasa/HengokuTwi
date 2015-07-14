@@ -6,11 +6,18 @@ public class RecordFilter{
 	public RecordFilter(){
 		this(-1, Character.UNSPECIFIED, Character.UNSPECIFIED);
 	}
+	public RecordFilter(int cnt){
+		this(cnt, Character.UNSPECIFIED, Character.UNSPECIFIED);
+	}
+	public RecordFilter(Character chara1, Character chara2){
+		this(-1, chara1, chara2);
+	}
 	public RecordFilter(int cnt, Character chara1, Character chara2){
 		count = cnt;
 		character_p1 = chara1;
 		character_p2 = chara2;
 	}
+
 	public String toString(){
 		//自キャラ、相手キャラでフィルタリング
 		StringBuilder sb = new StringBuilder();
