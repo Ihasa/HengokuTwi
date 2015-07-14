@@ -18,11 +18,11 @@ public class RecordFilter{
 		character_p2 = chara2;
 	}
 
-	public String toString(){
+	public String getQuery(){
 		//自キャラ、相手キャラでフィルタリング
 		StringBuilder sb = new StringBuilder();
 		if(character_p1.isSpecified()){
-			sb.append("where p1id = " + character_p1);
+			sb.append("where p1id = " + character_p1.getId());
 			if(character_p2.isSpecified())
 				sb.append(" and p2id = ").append(character_p2.getId());
 		}
@@ -34,6 +34,33 @@ public class RecordFilter{
 			sb.append(" order by timestamp desc");
 			sb.append(" limit ").append(count);
 		}
+		return sb.toString();
+	}
+	public String toString(){
+		StringBuilder sb = new StringBuilder();
+		
+		if(character_p1 != Character.UNSPECIFIED){
+			if(character_p2 != Character.UNSPECIFIED){
+				sb.append(character_p1.toString());
+				sb.append("vs");
+				sb.append(character_p2.toString());
+				sb.append("戦");
+			}else{
+				sb.append(character_p1.toString());
+				sb.append("使用時");
+			}
+		}else{
+			if(character_p2 != Character.UNSPECIFIED){
+				sb.append("vs");
+				sb.append(character_p2.toString());
+				sb.append("戦");
+			}else{
+				sb.append("総合");
+			}
+		}
+		if(count > 0)
+			sb.append("(直近" + count + "戦)");
+		
 		return sb.toString();
 	}
 }
