@@ -10,10 +10,15 @@ public class RecordFilter{
 		charaNumber = charaNum;
 	}
 	public String toString(){
-		//where句以降のsql文を書く
+		//直近n戦の戦績、相手キャラでフィルタリング
 		StringBuilder sb = new StringBuilder();
-		if(charaNumber > 0)
-			sb.append("p2id = " + charaNumber);
+		if(charaNumber > 0){
+			sb.append("where p2id = ").append(charaNumber);
+		}
+		if(count > 0){
+			sb.append(" order by timestamp desc");
+			sb.append(" limit ").append(count);
+		}
 		return sb.toString();
 	}
 }

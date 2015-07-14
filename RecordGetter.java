@@ -38,16 +38,13 @@ public class RecordGetter {
 	}
 	public RecordInfo getRecordInfo(RecordFilter filter){
 		try{
-			String select = "select count(timestamp) from trackrecord145 ";
+			String source = "(select * from trackrecord145 " + filter.toString() + ")";
+			
+			String select = "select count(timestamp) from " + source;
 			String allSql = select;
-			String winsSql = select + "where p1win > p2win ";
-			String filterSql = filter.toString();
-			if(!filterSql.equals("")){
-				allSql += "where " + filterSql;
-				winsSql += "and " + filterSql;
-			}
-System.out.println(winsSql);
-			int all = filter.count > 0 ? filter.count : executeQuery(allSql).getInt(1);
+			String winsSql = select + " where p1win > p2win ";
+			
+			int all = executeQuery(allSql).getInt(1);
 			int wins = executeQuery(winsSql).getInt(1);
 			
 			return new RecordInfo(all, wins);
@@ -56,7 +53,6 @@ System.out.println(winsSql);
 			return null;
 		}
 	}
-	
 
 	private ResultSet executeQuery(String sql) throws Exception{
 		return statement.executeQuery(sql);
