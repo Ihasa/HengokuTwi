@@ -60,7 +60,7 @@ public class RecordGetter {
 			int all = executeQuery(allSql).getInt(1);
 			int wins = executeQuery(winsSql).getInt(1);
 			
-			return new RecordInfo(all, wins);
+			return new RecordInfo(all, wins, filter);
 		}catch(Exception e){
 			System.out.println(e);
 			return null;
