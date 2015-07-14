@@ -49,6 +49,7 @@ public class TweetManager {
 	//è¡Ç∑Ç©Ç»ÇÒÇ©ÇµÇ»Ç¢Ç∆
 	public String createRequestToken(){
 		try{
+			twitter.setOAuthAccessToken(null);
 			requestToken = twitter.getOAuthRequestToken();
 			return requestToken.getAuthorizationURL();
 		}catch(Exception e){
