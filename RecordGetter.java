@@ -34,7 +34,7 @@ public class RecordGetter {
 	}
 
 	//総合戦績から使用率のもっとも高いキャラクターを取得
-	public Character getMainCharacter() throws Exception{
+	/*private Character getMainCharacter() throws Exception{
 		String sql = "select p1id, max(C) from (select p1id, count(timestamp) as C from trackrecord145 group by p1id)";
 		ResultSet rs = executeQuery(sql);
 		Character chara = Character.UNSPECIFIED;
@@ -43,7 +43,7 @@ public class RecordGetter {
 			chara = Character.fromId(id);
 		}
 		return chara;
-	}
+	}*/
 
 	//設定したフィルタリング条件で戦績を取得
 	public RecordInfo getRecordInfo(){

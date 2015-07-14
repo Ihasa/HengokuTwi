@@ -24,11 +24,10 @@ public class HengokuTwi {
 		RecordGetter getter = RecordGetter.createInstance("Default.db");
 		//共通で総合戦績は出す。あとメインキャラも
 		RecordInfo info = getter.getRecordInfo();
-		Character mainChara = getter.getMainCharacter();
 		sb.append("＊あなたの東方深秘録戦績＊").append('\n');
 		//以下は設定ファイルで規定する↓
-		//メインキャラ
-		sb.append("最もよく使うキャラ:" + mainChara).append('\n');
+		//foreach...
+		
 		//総合
 		sb.append(info.toString()).append('\n');
 		//直近50
