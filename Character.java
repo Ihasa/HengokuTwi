@@ -1,5 +1,5 @@
 public enum Character{
-	INVALID(-1),
+	UNSPECIFIED(-1),
 	REIMU(0), MARISA(1),
 	ICHIRIN(2), HIJIRI(3), HUTO(4), MIKO(5),
 	NITORI(6), KOISHI(7), MAMIZOU(8), KOKORO(9),
@@ -10,7 +10,7 @@ public enum Character{
 		this.id = id;
 	}
 	public int getId(){ return id; }
-	public boolean isValid(){ return id != -1; }
+	public boolean isSpecified(){ return id != -1; }
 };
 /*
 ‚O—ì–²

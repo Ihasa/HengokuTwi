@@ -13,7 +13,7 @@ public class HengokuTwi {
 		System.out.println("Ÿ—¦:" + info.getWinningPercentage());
 
 		//filter‚ÌƒeƒXƒg
-		RecordFilter filter = new RecordFilter(30, 5);
+		RecordFilter filter = new RecordFilter(20,Character.UNSPECIFIED, Character.MARISA);
 		info = getter.getRecordInfo(filter);
 		System.out.println("‘‡”:" + info.getRecordCount());
 		System.out.println("Ÿ‚¿:" + info.getWins());
