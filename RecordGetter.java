@@ -33,6 +33,19 @@ public class RecordGetter {
 		}
 	}
 
+	//総合戦績から使用率のもっとも高いキャラクターを取得
+	public Character getMainCharacter() throws Exception{
+		String sql = "select p1id, max(C) from (select p1id, count(timestamp) as C from trackrecord145 group by p1id)";
+		ResultSet rs = executeQuery(sql);
+		Character chara = Character.UNSPECIFIED;
+		while(rs.next()){
+			int id = rs.getInt(1);
+			chara = Character.fromId(id);
+		}
+		return chara;
+	}
+
+	//設定したフィルタリング条件で戦績を取得
 	public RecordInfo getRecordInfo(){
 		return getRecordInfo(new RecordFilter());
 	}
@@ -56,22 +69,6 @@ public class RecordGetter {
 
 	private ResultSet executeQuery(String sql) throws Exception{
 		return statement.executeQuery(sql);
-	}
-
-	public void printAll() throws Exception{
-		System.out.println("Result:");
-		String sql = "select * from trackrecord145";
-		//クエリ実行
-		ResultSet rs = statement.executeQuery(sql);
-			
-		ResultSetMetaData rsmd = rs.getMetaData();
-		while (rs.next()) {
-			for (int i = 1; i <= rsmd.getColumnCount(); i++) {
-				System.out.print(rs.getString(i));
-				System.out.print(i < rsmd.getColumnCount() ? "," : "");
-			}
-			System.out.print(System.getProperty("line.separator"));
-		}			
 	}
 	
 	public void finalize(){
