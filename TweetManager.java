@@ -44,19 +44,30 @@ public class TweetManager {
 		}
 	}
 	
+	//twitter.propertiesにアクセストークンが登録済みかどうか調べる
+	//falseの場合はauthorizeする必要がある
+	public boolean isAuthorized(){
+		try{
+			AccessToken token = twitter.getOAuthAccessToken();
+		}catch(Exception e){
+			return false;
+		}
+		return true;
+	}
+	
 	//リクエストトークンを生成し、認証URLを返す
 	//twitter.propertiesにアクセストークンが書かれてるとこれが例外を起こす
 	//消すかなんかしないと
 	public String createRequestToken(){
 		try{
-			twitter.setOAuthAccessToken(null);
+			if(isAuthorized())
+				twitter.setOAuthAccessToken(null);
 			requestToken = twitter.getOAuthRequestToken();
 			return requestToken.getAuthorizationURL();
 		}catch(Exception e){
 			return null;
 		}
 	}
-	
 	//アクセストークン取得・保存
 	public boolean authorize(String pin){
 		//twitter.setOAuthConsumer(...);
