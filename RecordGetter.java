@@ -32,17 +32,31 @@ public class RecordGetter {
 			return null;
 		}
 	}
-	
-	public float getWinningPercentage(){
+
+	public RecordInfo getRecordInfo(){
+		return getRecordInfo(new RecordFilter());
+	}
+	public RecordInfo getRecordInfo(RecordFilter filter){
 		try{
-			int all = executeQuery("select count(timestamp) from trackrecord145").getInt(1);
-			int wins = executeQuery("select count(timestamp) from trackrecord145 where p1win > p2win").getInt(1);
-			return (float)wins / all;
+			String select = "select count(timestamp) from trackrecord145 ";
+			String allSql = select;
+			String winsSql = select + "where p1win > p2win ";
+			String filterSql = filter.toString();
+			if(!filterSql.equals("")){
+				allSql += "where " + filterSql;
+				winsSql += "and " + filterSql;
+			}
+System.out.println(winsSql);
+			int all = filter.count > 0 ? filter.count : executeQuery(allSql).getInt(1);
+			int wins = executeQuery(winsSql).getInt(1);
+			
+			return new RecordInfo(all, wins);
 		}catch(Exception e){
 			System.out.println(e);
-			return -1;
+			return null;
 		}
 	}
+	
 
 	private ResultSet executeQuery(String sql) throws Exception{
 		return statement.executeQuery(sql);
