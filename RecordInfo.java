@@ -1,6 +1,6 @@
 public class RecordInfo {
-	int recordCount;
-	int wins;
+	private int recordCount;
+	private int wins;
 	public RecordInfo(int count, int win)throws Exception{
 		if(count <= 0)
 			throw new Exception("Invalid record count");
@@ -12,6 +12,7 @@ public class RecordInfo {
 
 	public int getRecordCount(){return recordCount;}
 	public int getWins(){return wins;}
+	public int getLoses(){return recordCount - wins;}
 	public float getWinningPercentage(){
 		if(recordCount > 0)
 			return (float)wins / recordCount;
