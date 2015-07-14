@@ -11,6 +11,18 @@ public enum Character{
 	}
 	public int getId(){ return id; }
 	public boolean isSpecified(){ return id != -1; }
+	public String toString(){
+		if(isSpecified())
+			return names[id];
+		return "–¢w’è";
+	}
+	private String[] names = {
+		"”—í—ì–²", "–¶‰J–‚—¹",
+		"‰_‹ˆê—Ö•‰_R","¹”’˜@",
+		"•¨•”•z“s", "–L‹½¨_q",
+		"‰Íé‚É‚Æ‚è", "ŒÃ–¾’n‚±‚¢‚µ", "“ñƒcŠâƒ}ƒ~ƒ]ƒE", "`‚±‚±‚ë",
+		"ˆï–Ø‰Øå", "“¡Œ´–…g", "­–¼j–­ŠÛ", "‰F²Œ©“Ÿq"
+	};
 };
 /*
 ‚O—ì–²
