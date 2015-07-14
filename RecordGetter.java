@@ -51,8 +51,8 @@ public class RecordGetter {
 	}
 	public RecordInfo getRecordInfo(RecordFilter filter){
 		try{
-			String source = "(select * from trackrecord145 " + filter.toString() + ")";
-			
+			String source = "(select * from trackrecord145 " + filter.getQuery() + ")";
+
 			String select = "select count(timestamp) from " + source;
 			String allSql = select;
 			String winsSql = select + " where p1win > p2win ";
