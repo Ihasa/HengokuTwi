@@ -43,7 +43,6 @@ public class RecordFilter{
 				sb.append(character_p1.toString());
 				sb.append("vs");
 				sb.append(character_p2.toString());
-				sb.append("í");
 			}else{
 				sb.append(character_p1.toString());
 				sb.append("g—p");
@@ -54,7 +53,6 @@ public class RecordFilter{
 			if(character_p2 != Character.UNSPECIFIED){
 				sb.append("vs");
 				sb.append(character_p2.toString());
-				sb.append("í");
 				if(count > 0)
 					sb.append("(’¼‹ß" + count + "í)");
 			}else{
