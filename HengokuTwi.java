@@ -24,29 +24,34 @@ public class HengokuTwi {
 		RecordGetter getter = RecordGetter.createInstance("Default.db");
 		//共通で総合戦績は出す。あとメインキャラも
 		RecordInfo info = getter.getRecordInfo();
-		sb.append("＊あなたの東方深秘録戦績＊").append('\n');
+		sb.append("＊あなたの東方深秘録戦績＊").append("\n\n");
 		//以下は設定ファイルで規定する↓
 		//foreach...
 		
 		//総合
-		sb.append(info.toString()).append('\n');
+		sb.append(info.toString()).append("\n\n");
 		//直近50
-		info = getter.getRecordInfo(new RecordFilter(50));
-		sb.append(info.toString()).append('\n');		
+		info = getter.getRecordInfo(50);
+		sb.append(info.toString()).append("\n\n");
 		//直近30
-		info = getter.getRecordInfo(new RecordFilter(30));
-		sb.append(info.toString()).append('\n');
-		//魔理沙戦での戦績
-		info = getter.getRecordInfo(new RecordFilter(Character.UNSPECIFIED, Character.MARISA));
-		sb.append(info.toString()).append('\n');
-		//直近40戦の対こいし戦の戦績
-		info = getter.getRecordInfo(new RecordFilter(40, Character.UNSPECIFIED, Character.KOISHI));
-		sb.append(info.toString()).append('\n');
-		sb.append("#東方深秘録");
+		info = getter.getRecordInfo(30);
+		sb.append(info.toString()).append("\n\n");
+		//vs神子戦での総合戦績
+		info = getter.getRecordInfo(Character.UNSPECIFIED, Character.MIKO);
+		sb.append(info.toString()).append("\n\n");
+		//直近40戦のvs聖戦の戦績
+		info = getter.getRecordInfo(40, Character.UNSPECIFIED, Character.BYAKUREN);
+		sb.append(info.toString()).append("\n\n");
+		//霊夢使用時のvs魔理沙戦の戦績(エラー)
+		info = getter.getRecordInfo(Character.REIMU, Character.MARISA);
+		if(info != null)
+			sb.append(info.toString()).append("\n\n");
+		sb.append("#東方深秘録");//　#辺獄録　#HengokuTwi");
 		
 		System.out.println(sb.toString());
 		System.out.println(sb.length());
-		//tm.tweet(sb.toString());
+		if(tm.tweet(sb.toString()) != null)
+			System.out.println("tweeted");
 		//カスタムで設定ファイルによって規定される内容をツイートする
 	}
 }

@@ -49,7 +49,16 @@ public class RecordGetter {
 	public RecordInfo getRecordInfo(){
 		return getRecordInfo(new RecordFilter());
 	}
-	public RecordInfo getRecordInfo(RecordFilter filter){
+	public RecordInfo getRecordInfo(int count){
+		return getRecordInfo(new RecordFilter(count));
+	}
+	public RecordInfo getRecordInfo(Character p1Chara, Character p2Chara){
+		return getRecordInfo(new RecordFilter(p1Chara,p2Chara));
+	}
+	public RecordInfo getRecordInfo(int count,Character p1Chara, Character p2Chara){
+		return getRecordInfo(new RecordFilter(count,p1Chara,p2Chara));
+	}
+	private RecordInfo getRecordInfo(RecordFilter filter){
 		try{
 			String source = "(select * from trackrecord145 " + filter.getQuery() + ")";
 
