@@ -19,13 +19,7 @@ public class HengokuTwi {
 
 		//ツイート内容の決定(外部ファイルからフィルタリング設定等読み込む)
 		//Default.dbへのパスも一応読み込むことにする
-		List<RecordFilter> filters = new ArrayList<RecordFilter>();
-		Scanner s = new Scanner(new File("config.txt"));
-		while(s.hasNextLine()){
-			String line = s.nextLine();
-			filters.add(createFilter(line));
-		}
-		s.close();
+		List<RecordFilter> filters = getFiltersFromFile();
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("＊あなたの東方深秘録戦績＊").append("\n\n");
@@ -37,8 +31,11 @@ public class HengokuTwi {
 				sb.append(info.toString()).append("\n\n");
 			}
 		}else{
-			//共通で総合戦績は出す。あとメインキャラも
+			//総合
 			RecordInfo info = getter.getRecordInfo();
+			sb.append(info.toString()).append("\n\n");
+			//直近100
+			info = getter.getRecordInfo(100);
 			sb.append(info.toString()).append("\n\n");
 			//直近50
 			info = getter.getRecordInfo(50);
@@ -46,16 +43,6 @@ public class HengokuTwi {
 			//直近30
 			info = getter.getRecordInfo(30);
 			sb.append(info.toString()).append("\n\n");
-			//vs神子戦での総合戦績
-			info = getter.getRecordInfo(10, Character.UNSPECIFIED, Character.MIKO);
-			sb.append(info.toString()).append("\n\n");
-			//直近40戦のvs一輪戦の戦績
-			info = getter.getRecordInfo(40, Character.UNSPECIFIED, Character.ICHIRIN);
-			sb.append(info.toString()).append("\n\n");
-			//霊夢使用時のvs魔理沙戦の戦績(エラー)
-			info = getter.getRecordInfo(Character.REIMU, Character.MARISA);
-			if(info != null)
-				sb.append(info.toString()).append("\n\n");
 		}
 		sb.append("#東方深秘録");//　#辺獄録　#HengokuTwi");
 		
@@ -65,6 +52,18 @@ public class HengokuTwi {
 		if(tm.tweet(sb.toString()) != null)
 			System.out.println("tweeted");*/
 		//カスタムで設定ファイルによって規定される内容をツイートする
+	}
+	private static List<RecordFilter> getFiltersFromFile(){
+		List<RecordFilter> res = new ArrayList<RecordFilter>();
+		try{
+			Scanner s = new Scanner(new File("config.txt"));
+			while(s.hasNextLine()){
+				String line = s.nextLine();
+				res.add(createFilter(line));
+			}
+			s.close();
+		}catch(Exception e){}
+		return res;
 	}
 	private static RecordFilter createFilter(String str){
 		String[] words = str.split(",");
