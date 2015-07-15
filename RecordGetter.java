@@ -69,7 +69,7 @@ public class RecordGetter {
 			int all = executeQuery(allSql).getInt(1);
 			int wins = executeQuery(winsSql).getInt(1);
 			//Žb’è
-			if(all <= filter.count)
+			if(all < filter.count)
 				filter.count = -1;
 			return new RecordInfo(all, wins, filter);
 		}catch(Exception e){
