@@ -58,27 +58,27 @@ public class HengokuTwi {
 		try{
 			Scanner s = new Scanner(new File("config.txt"));
 			while(s.hasNextLine()){
-				String line = s.nextLine();
-				res.add(createFilter(line));
+				try{
+					String line = s.nextLine();
+					res.add(createFilter(line));
+				}catch(Exception e){}
 			}
 			s.close();
 		}catch(Exception e){}
 		return res;
 	}
-	private static RecordFilter createFilter(String str){
+	private static RecordFilter createFilter(String str) throws Exception{
 		String[] words = str.split(",");
 		int count = -1;
 		Character c1 = Character.UNSPECIFIED;
 		Character c2 = Character.UNSPECIFIED;
-		try{
+		
+		if(!words[0].equals("_"))
 			count = Integer.parseInt(words[0]);
-		}catch(Exception e){}
-		try{
+		if(!words[1].equals("_"))
 			c1 = Character.valueOf(words[1]);
-		}catch(Exception e){}
-		try{
+		if(!words[2].equals("_"))
 			c2 = Character.valueOf(words[2]);
-		}catch(Exception e){}
 		return new RecordFilter(count, c1, c2);
 	}
 }
