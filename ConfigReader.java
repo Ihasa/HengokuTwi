@@ -25,19 +25,19 @@ public class ConfigReader{
 		List<RecordFilter> res = new ArrayList<RecordFilter>();
 		while(scanner.hasNextLine()){
 			try{
-				String line = scanner.nextLine();
-				res.add(createFilter(line));
+				String line = scanner.nextLine().replaceAll("\\s", "");
+				if(line.charAt(0) != '#')
+					res.add(createFilter(line));
 			}catch(Exception e){}
 		}
 		scanner.reset();
 		return res;
 	}
 	private RecordFilter createFilter(String str) throws Exception{
-		String fmted = str.replaceAll("\\s","");
-		if(wildCards.containsKey(fmted))
-			return wildCards.get(fmted);
+		if(wildCards.containsKey(str))
+			return wildCards.get(str);
 		
-		String[] words = fmted.split(",");
+		String[] words = str.split(",");
 		int count = -1;
 		Character c1 = Character.UNSPECIFIED;
 		Character c2 = Character.UNSPECIFIED;
