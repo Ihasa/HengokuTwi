@@ -11,7 +11,7 @@ public class HengokuTwi {
 		TweetManager tm = TweetManager.getInstance();
 		if(!tm.isAuthorized()){
 			System.out.println(tm.createRequestToken());
-			Scanner s = new Scanner(System.in);
+			Scanner s = new Scanner();
 			String pin = s.nextLine();
 			s.close();
 			tm.authorize(pin);
@@ -19,7 +19,9 @@ public class HengokuTwi {
 
 		//ツイート内容の決定(外部ファイルからフィルタリング設定等読み込む)
 		//Default.dbへのパスも一応読み込むことにする
-		List<RecordFilter> filters = getFiltersFromFile();
+		//List<RecordFilter> filters = getFiltersFromFile();
+		ConfigReader cr = new ConfigReader(System.in);
+		List<RecordFilter> filters = cr.getFilters();
 
 		StringBuilder sb = new StringBuilder();
 		sb.append("＊あなたの東方深秘録戦績＊").append("\n\n");
@@ -51,43 +53,5 @@ public class HengokuTwi {
 		/*
 		if(tm.tweet(sb.toString()) != null)
 			System.out.println("tweeted");*/
-	}
-	private static List<RecordFilter> getFiltersFromFile(){
-		List<RecordFilter> res = new ArrayList<RecordFilter>();
-		try{
-			Scanner s = new Scanner(new File("config.txt"));
-			while(s.hasNextLine()){
-				try{
-					String line = s.nextLine();
-					res.add(createFilter(line));
-				}catch(Exception e){}
-			}
-			s.close();
-		}catch(Exception e){}
-		return res;
-	}
-	private static RecordFilter createFilter(String str) throws Exception{
-		String fmted = str.replaceAll("\\s","");
-		RecordFilter f;
-		if((f = wildCard(fmted)) != null)
-			return f;
-		
-		String[] words = fmted.split(",");
-		int count = -1;
-		Character c1 = Character.UNSPECIFIED;
-		Character c2 = Character.UNSPECIFIED;
-		
-		if(!words[0].equals("_"))
-			count = Integer.parseInt(words[0]);
-		if(!words[1].equals("_"))
-			c1 = Character.valueOf(words[1]);
-		if(!words[2].equals("_"))
-			c2 = Character.valueOf(words[2]);
-		return new RecordFilter(count, c1, c2);
-	}
-	private static RecordFilter wildCard(String str){
-		if(str.equals("all"))
-			return new RecordFilter(-1, Character.UNSPECIFIED, Character.UNSPECIFIED);
-		return null;
 	}
 }
