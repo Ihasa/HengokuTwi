@@ -11,7 +11,7 @@ public class HengokuTwi {
 		TweetManager tm = TweetManager.getInstance();
 		if(!tm.isAuthorized()){
 			System.out.println(tm.createRequestToken());
-			Scanner s = new Scanner();
+			Scanner s = new Scanner(System.in);
 			String pin = s.nextLine();
 			s.close();
 			tm.authorize(pin);
@@ -20,7 +20,7 @@ public class HengokuTwi {
 		//ツイート内容の決定(外部ファイルからフィルタリング設定等読み込む)
 		//Default.dbへのパスも一応読み込むことにする
 		//List<RecordFilter> filters = getFiltersFromFile();
-		ConfigReader cr = new ConfigReader(System.in);
+		ConfigReader cr = new ConfigReader("config.txt");
 		List<RecordFilter> filters = cr.getFilters();
 
 		StringBuilder sb = new StringBuilder();
