@@ -51,7 +51,6 @@ public class HengokuTwi {
 		/*
 		if(tm.tweet(sb.toString()) != null)
 			System.out.println("tweeted");*/
-		//カスタムで設定ファイルによって規定される内容をツイートする
 	}
 	private static List<RecordFilter> getFiltersFromFile(){
 		List<RecordFilter> res = new ArrayList<RecordFilter>();
@@ -68,7 +67,8 @@ public class HengokuTwi {
 		return res;
 	}
 	private static RecordFilter createFilter(String str) throws Exception{
-		String[] words = str.split(",");
+		String fmted = str.replaceAll("\\s","");
+		String[] words = fmted.split(",");
 		int count = -1;
 		Character c1 = Character.UNSPECIFIED;
 		Character c2 = Character.UNSPECIFIED;
