@@ -68,6 +68,10 @@ public class HengokuTwi {
 	}
 	private static RecordFilter createFilter(String str) throws Exception{
 		String fmted = str.replaceAll("\\s","");
+		RecordFilter f;
+		if((f = wildCard(fmted)) != null)
+			return f;
+		
 		String[] words = fmted.split(",");
 		int count = -1;
 		Character c1 = Character.UNSPECIFIED;
@@ -80,5 +84,10 @@ public class HengokuTwi {
 		if(!words[2].equals("_"))
 			c2 = Character.valueOf(words[2]);
 		return new RecordFilter(count, c1, c2);
+	}
+	private static RecordFilter wildCard(String str){
+		if(str.equals("all"))
+			return new RecordFilter(-1, Character.UNSPECIFIED, Character.UNSPECIFIED);
+		return null;
 	}
 }
