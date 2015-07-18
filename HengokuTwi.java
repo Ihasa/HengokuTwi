@@ -30,7 +30,8 @@ public class HengokuTwi {
 		if(filters.size() > 0){
 			for(RecordFilter f : filters){
 				RecordInfo info = getter.getRecordInfo(f);
-				sb.append(info.toString()).append("\n\n");
+				if(info != null)
+					sb.append(info.toString()).append("\n\n");
 			}
 		}else{
 			//ëççá
