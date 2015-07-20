@@ -51,6 +51,13 @@ public class HengokuTwi {
 		
 		System.out.println(sb.toString());
 		System.out.println(sb.length());
+		
+		JobThread p = new JobThread(
+			() -> {System.out.println("YEY");},
+			3
+		);
+		p.start();
+		p.join();
 		/*
 		if(tm.tweet(sb.toString()) != null)
 			System.out.println("tweeted");*/
