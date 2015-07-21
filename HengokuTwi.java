@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.util.Scanner;
 import java.util.List;
 import java.util.ArrayList;
+import java.time.Duration;
 public class HengokuTwi {
 	public static void main(String[] args) throws Exception {
 		TweetManager tm = TweetManager.getInstance();
@@ -16,10 +17,15 @@ public class HengokuTwi {
 			s.close();
 			tm.authorize(pin);
 		}
-		JobThread thread = new JobThread(()->post(tm));
+		RecordGetter getter = RecordGetter.createInstance("Default.db");
+		
+		post(tm, getter);
+		/*JobThread thread = new JobThread(
+			()->post(tm, getter),
+			Duration.ofSeconds(5));
 		thread.start();
 		thread.join();
-		//post();
+		*/
 		/*
 		//ツイート内容の決定(外部ファイルからフィルタリング設定等読み込む)
 		//Default.dbへのパスも一応読み込むことにする
@@ -60,7 +66,7 @@ public class HengokuTwi {
 		if(tm.tweet(sb.toString()) != null)
 			System.out.println("tweeted");*/
 	}
-	private static void post(TweetManager tm){
+	private static void post(TweetManager tm, RecordGetter getter){
 		try{
 			//ツイート内容の決定(外部ファイルからフィルタリング設定等読み込む)
 			//Default.dbへのパスも一応読み込むことにする
@@ -73,7 +79,6 @@ public class HengokuTwi {
 
 			StringBuilder sb = new StringBuilder();
 			sb.append(title).append("\n\n");
-			RecordGetter getter = RecordGetter.createInstance("Default.db");
 			//フィルターに基づいてツイート
 			if(filters.size() > 0){
 				for(RecordFilter f : filters){
@@ -102,9 +107,8 @@ public class HengokuTwi {
 			System.out.println(sb.toString());
 			System.out.println(sb.length());
 
-			/*
 			if(tm.tweet(sb.toString()) != null)
-				System.out.println("tweeted");*/
+				System.out.println("tweeted");
 		}catch(Exception e){
 			System.out.println(e);
 		}

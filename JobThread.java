@@ -2,21 +2,19 @@ import java.time.LocalDateTime;
 import java.time.Duration;
 
 public class JobThread extends Thread{
-	int sleepSec;
 	Job job;
 	JobCycle cycle;
-	public JobThread(Job j, int cycle){
+	public JobThread(Job j, Duration duration){
 		job = j;
-		sleepSec = cycle;
-		this.cycle = new JobCycle(Duration.ofSeconds(4));
+		this.cycle = new JobCycle(duration);
 	}
+	
 	public void run(){
+		while(!cycle.isActive()){}
 		while(true){
 			try{
-				if(cycle.isActive()){
-					Thread.sleep(cycle.getDuration().toMillis());
-					job.execute();
-				}
+				Thread.sleep(cycle.getDuration().toMillis());
+				job.execute();
 			}catch(Exception e){
 				System.out.println(e);
 			}
